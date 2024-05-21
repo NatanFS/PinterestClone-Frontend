@@ -1,18 +1,22 @@
 "use client";
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Modal from 'react-modal';
 import { UserContext } from '../context/UserContext';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-Modal.setAppElement(document.body);
 
 const LoginModal = ({ isOpen, onRequestClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      Modal.setAppElement(document.body);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

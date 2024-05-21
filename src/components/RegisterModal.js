@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-Modal.setAppElement(document.body);
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const RegisterModal = ({ isOpen, onRequestClose }) => {
@@ -12,6 +10,13 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      Modal.setAppElement(document.body);
+    }
+  }, []);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
