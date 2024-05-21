@@ -59,17 +59,17 @@ export default function PinDetail() {
     <div className="container mx-auto py-8 px-4">
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="mb-4">
-          <h1 className="text-4xl font-bold mb-2 text-black">{pin.title}</h1>
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">{pin.title}</h1>
           <p className="text-gray-600">Currently viewed by {viewersCount} people</p>
         </div>
-        <div className="w-full h-96 mb-4 rounded-lg shadow-sm overflow-hidden">
-          <img src={pin.image} alt={pin.title} className="w-full h-full object-contain rounded-lg" />
+        <div className="w-full mb-4 rounded-lg shadow-sm overflow-hidden">
+          <img src={pin.image} alt={pin.title} className="w-full object-contain rounded-lg" style={{ maxHeight: '600px' }} />
         </div>
         <div className="border-t border-gray-200 pt-4">
           <p className="text-gray-600 mb-4">{pin.description}</p>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600">Resolution: {resolution.width}x{resolution.height}</p>
+              <p className="text-gray-600">Resolution: {resolution.width} x {resolution.height}</p>
               <p className="text-gray-600">Tags: {pin.tags.join(', ')}</p>
             </div>
             <button onClick={handleLike} className="flex items-center text-red-500 hover:text-red-600 transition">
