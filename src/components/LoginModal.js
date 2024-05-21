@@ -31,11 +31,13 @@ const LoginModal = ({ isOpen, onRequestClose }) => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
-        const user = { username };
-        localStorage.setItem('user', JSON.stringify(user));
-        setUser(user);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('access_token', data.access);
+          localStorage.setItem('refresh_token', data.refresh);
+          const user = { username };
+          localStorage.setItem('user', JSON.stringify(user));
+          setUser(user);
+        }
         onRequestClose();
       } else {
         setError('Invalid username or password');

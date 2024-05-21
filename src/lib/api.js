@@ -18,9 +18,11 @@ export async function fetchPins(searchQuery, filterType, orderCriteria, url = nu
 
   const headers = {};
 
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
   }
 
   const response = await fetch(url, {
@@ -33,8 +35,6 @@ export async function fetchPins(searchQuery, filterType, orderCriteria, url = nu
 
   return response.json();
 }
-
-
 
 export async function fetchPin(pinId) {
   const response = await fetch(`${API_BASE_URL}/pins/${pinId}/`);
@@ -53,9 +53,11 @@ export async function uploadPin(data) {
 
   const headers = {};
 
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
   }
 
   const response = await fetch(`${API_BASE_URL}/pins/`, {
@@ -71,15 +73,20 @@ export async function uploadPin(data) {
   return response.json();
 }
 
-
 export async function toggleLike(pinId) {
-  
+  const headers = {};
+
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    headers['Content-Type'] = 'application/json';
+  }
+
   const response = await fetch(`${API_BASE_URL}/pins/${pinId}/like/`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-      'Content-Type': 'application/json',
-    },
+    headers: headers,
   });
 
   if (!response.ok) {

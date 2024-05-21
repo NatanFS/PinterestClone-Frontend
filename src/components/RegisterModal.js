@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
