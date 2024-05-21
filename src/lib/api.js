@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchPins(searchQuery, filterType, orderCriteria, url = null) {
   const params = new URLSearchParams();
@@ -11,7 +11,7 @@ export async function fetchPins(searchQuery, filterType, orderCriteria, url = nu
       params.append('ordering', orderCriteria);
     }
     params.append('page', 1); 
-    url = `http://127.0.0.1:8000/api/pins/?${params.toString()}`;
+    url = `${API_BASE_URL}/pins/?${params.toString()}`;
   }
 
   const headers = {};
@@ -56,7 +56,7 @@ export async function uploadPin(data) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch('http://127.0.0.1:8000/api/pins/', {
+  const response = await fetch(`${API_BASE_URL}/pins/`, {
     method: 'POST',
     headers: headers,
     body: formData,
@@ -72,7 +72,7 @@ export async function uploadPin(data) {
 
 export async function toggleLike(pinId) {
   
-  const response = await fetch(`http://127.0.0.1:8000/api/pins/${pinId}/like/`, {
+  const response = await fetch(`${API_BASE_URL}/pins/${pinId}/like/`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,

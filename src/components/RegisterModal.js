@@ -5,6 +5,8 @@ import Modal from 'react-modal';
 
 Modal.setAppElement(document.body);
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const RegisterModal = ({ isOpen, onRequestClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +21,7 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/register/', {
+      const response = await fetch(`${API_BASE_URL}/auth/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

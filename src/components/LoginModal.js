@@ -4,6 +4,8 @@ import React, { useState, useContext } from 'react';
 import Modal from 'react-modal';
 import { UserContext } from '../context/UserContext';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 Modal.setAppElement(document.body);
 
 const LoginModal = ({ isOpen, onRequestClose }) => {
@@ -15,7 +17,7 @@ const LoginModal = ({ isOpen, onRequestClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/token/', {
+      const response = await fetch(`${API_BASE_URL}/auth/token/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
