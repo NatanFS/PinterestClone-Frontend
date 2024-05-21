@@ -48,9 +48,9 @@ const Pin = ({ image, title, tags = [], id, likes: initialLikes, description }) 
         <img src={image} alt={title} className="w-full object-cover" style={{ aspectRatio: `${resolution.width}/${resolution.height}` }} />
         <div className="p-4 flex flex-col justify-between">
           <div>
-            <h2 className="text-lg font-bold mb-2">{title}</h2>
-            <p className="text-gray-600">{tags.join(', ')}</p>
-            <p className="text-gray-600 mt-2">{description}</p>
+            <h2 className="text-lg font-bold mb-2 text-gray-900 truncate">{title}</h2>
+            <p className="text-gray-600 mt-2 truncated">{description}</p>
+            <p className="text-gray-600 truncate">{tags.join(', ')}</p>
           </div>
           <button onClick={handleLike} className="self-start mt-2 flex items-center text-red-500 hover:text-red-600 transition">
             <FaHeart className="mr-1" /> Like ({likes})
