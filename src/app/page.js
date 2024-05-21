@@ -5,10 +5,12 @@ import { FaSearch } from 'react-icons/fa';
 import Pin from '../components/pin/Pin';
 import UploadForm from '../components/UploadForm';
 import { fetchPins, uploadPin } from '../lib/api';
+import { useUser } from '../components/Layout';
 
 export default function HomePage() {
   const [pins, setPins] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { user } = useUser();
 
   useEffect(() => {
     const loadPins = async () => {
@@ -31,6 +33,14 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto py-8 px-4">
+      <span className='text-lg font-bold text-gray-900'>
+        {user ? (
+          <>Hello, {user.username}!</>
+        ) : (
+          <>Hello, guest!</>
+        )}
+      </span>
+      
       <div className="relative mt-4">
         <input
           type="text"

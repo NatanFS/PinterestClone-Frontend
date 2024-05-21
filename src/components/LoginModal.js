@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useUser } from './Layout';
 
 Modal.setAppElement(document.body);
 
 const LoginModal = ({ isOpen, onRequestClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setUser } = useUser();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // TODO: Backend call
+    const user = { username };
+    localStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
+    onRequestClose();
   };
 
   return (
@@ -26,7 +32,7 @@ const LoginModal = ({ isOpen, onRequestClose }) => {
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>
             <input
-              type="username"
+              type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-blue-500 text-gray-900 focus:border-blue-500"
