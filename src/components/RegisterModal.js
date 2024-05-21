@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
@@ -7,10 +9,32 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Backend call
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/auth/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        onRequestClose();
+      } else {
+        setError('Failed to register');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
   };
 
   return (
@@ -23,6 +47,7 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
     >
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4 text-gray-900">Register</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>
@@ -39,7 +64,7 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-blue-500 text-gray-900 focus:border-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
           <div className="mb-4">
@@ -48,7 +73,7 @@ const RegisterModal = ({ isOpen, onRequestClose }) => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-blue-500 text-gray-900 focus:border-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded-lg p-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
             />
           </div>
           <button

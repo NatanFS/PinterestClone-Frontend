@@ -1,29 +1,37 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import Pin from '../components/pin/Pin';
 import UploadForm from '../components/UploadForm';
 import { fetchPins, uploadPin } from '../lib/api';
-import { useUser } from '../components/Layout';
+import { UserContext } from '../context/UserContext';
 
-export default function HomePage() {
+const HomePage = () => {
   const [pins, setPins] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const { user } = useUser();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const loadPins = async () => {
-      const pins = await fetchPins();
-      setPins(pins);
+      try {
+        const pins = await fetchPins();
+        setPins(pins);
+      } catch (error) {
+        console.error("Failed to fetch pins:", error);
+      }
     };
 
     loadPins();
   }, []);
 
   const handleUpload = async (newPin) => {
-    const uploadedPin = await uploadPin(newPin);
-    setPins([...pins, uploadedPin]);
+    try {
+      const uploadedPin = await uploadPin(newPin);
+      setPins([...pins, uploadedPin]);
+    } catch (error) {
+      console.error("Failed to upload pin:", error);
+    }
   };
 
   const filteredPins = pins.filter(pin =>
@@ -33,13 +41,11 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <span className='text-lg font-bold text-gray-900'>
-        {user ? (
-          <>Hello, {user.username}!</>
-        ) : (
-          <>Hello, guest!</>
-        )}
-      </span>
+      <span className='text-lg bold text-gray-900'>{ user ? (
+        <>Hello, {user.username}!</>
+      ) : (
+        <>Hello, guest!</>
+      )}</span>
       
       <div className="relative mt-4">
         <input
@@ -60,3 +66,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+export default HomePage;

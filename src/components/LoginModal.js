@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState, useContext } from 'react';
 import Modal from 'react-modal';
-import { useUser } from './Layout';
+import { UserContext } from '../context/UserContext';
 
 Modal.setAppElement(document.body);
 
 const LoginModal = ({ isOpen, onRequestClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser } = useUser();
+  const [error, setError] = useState('');
+  const { setUser } = useContext(UserContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Backend call
-    const user = { username };
-    localStorage.setItem('user', JSON.stringify(user));
-    setUser(user);
-    onRequestClose();
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/auth/token/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+        const user = { username };
+        localStorage.setItem('user', JSON.stringify(user));
+        setUser(user);
+        onRequestClose();
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
   };
 
   return (
@@ -28,6 +49,7 @@ const LoginModal = ({ isOpen, onRequestClose }) => {
     >
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4 text-gray-900">Login</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Username</label>

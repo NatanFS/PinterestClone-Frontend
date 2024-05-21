@@ -50,7 +50,7 @@ const Pin = ({ image, title, tags = [], id, likes: initialLikes, description }) 
           <div>
             <h2 className="text-lg font-bold mb-2 text-gray-900 truncate">{title}</h2>
             <p className="text-gray-600 mt-2 truncated">{description}</p>
-            <p className="text-gray-600 truncate">{tags.join(', ')}</p>
+            <p className="text-gray-600 truncate">{tags ? tags.join(', '): ""}</p>
           </div>
           <button onClick={handleLike} className="self-start mt-2 flex items-center text-red-500 hover:text-red-600 transition">
             <FaHeart className="mr-1" /> Like ({likes})
