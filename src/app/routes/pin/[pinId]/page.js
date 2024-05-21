@@ -74,7 +74,7 @@ export default function PinDetail() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600">Resolution: {resolution.width}x{resolution.height}</p>
-              <p className="text-gray-600">Tags: {pin.tags ? pin.tags.join(', '): ""}</p>
+              <p className="text-gray-600">Tags: {pin.tags ?? ""}</p>
             </div>
             <button onClick={handleLike} className="flex items-center text-red-500 hover:text-red-600 transition">
               <FaHeart className="mr-1" /> Like ({likes})

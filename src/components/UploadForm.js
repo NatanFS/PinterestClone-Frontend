@@ -11,7 +11,7 @@ export default function UploadForm({ onUpload }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (image && title && tags && description) {
-      onUpload({ image, title, tags: tags.split(',').map(tag => tag.trim()), description });
+      onUpload({ image, title, tags: tags, description });
       setImage(null);
       setTitle('');
       setTags('');
