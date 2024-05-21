@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { fetchPin, likePin } from '../../../../lib/api';
+import { fetchPin, toggleLike } from '../../../../lib/api';
 import { FaHeart } from 'react-icons/fa';
 
 const getImageResolution = (src) => {
@@ -20,6 +20,7 @@ export default function PinDetail() {
   const [pin, setPin] = useState(null);
   const [viewersCount, setViewersCount] = useState(0);
   const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
   const [resolution, setResolution] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -29,7 +30,8 @@ export default function PinDetail() {
       const pin = await fetchPin(pinId);
       if (isMounted) {
         setPin(pin);
-        setLikes(pin.likes);
+        setLikes(pin.likes.length);
+        setLiked(pin.liked);
         setViewersCount((prevCount) => prevCount + 1);
 
         const res = await getImageResolution(pin.image);
@@ -50,10 +52,11 @@ export default function PinDetail() {
   const handleLike = async (e) => {
     e.stopPropagation();
     try {
-      const updatedPin = await likePin(pinId);
+      const updatedPin = await toggleLike(pinId);
       setLikes(updatedPin.likes);
+      setLiked(updatedPin.liked);
     } catch (error) {
-      console.error("Failed to like pin:", error);
+      console.error("Failed to toggle like:", error);
     }
   };
 
@@ -77,7 +80,7 @@ export default function PinDetail() {
               <p className="text-gray-600">Tags: {pin.tags ?? ""}</p>
             </div>
             <button onClick={handleLike} className="flex items-center text-red-500 hover:text-red-600 transition">
-              <FaHeart className="mr-1" /> Like ({likes})
+              <FaHeart className={`mr-1 ${liked ? 'text-red-600' : 'text-red-500'}`} /> Like ({likes})
             </button>
           </div>
         </div>

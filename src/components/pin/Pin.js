@@ -35,7 +35,7 @@ const Pin = ({ image, title, tags = [], id, likes: initialLikes, description }) 
 
   const handleLike = async (e) => {
     e.stopPropagation();
-    await likePin(id);
+    await toggleLike(id);
     setLikes((prevLikes) => prevLikes + 1);
   };
 
@@ -53,7 +53,7 @@ const Pin = ({ image, title, tags = [], id, likes: initialLikes, description }) 
             <p className="text-gray-600 truncate">Tags: {tags ?? ""}</p>
           </div>
           <button onClick={handleLike} className="self-start mt-2 flex items-center text-red-500 hover:text-red-600 transition">
-            <FaHeart className="mr-1" /> Like ({likes})
+            <FaHeart className="mr-1" /> Like ({likes.length})
           </button>
         </div>
       </div>

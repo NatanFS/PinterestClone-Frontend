@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
           <div className="flex space-x-4">
             {user ? (
               <>
-                <span className="mr-4">Hello, {user.username}</span>
+                <span className="mr-4">Hello, {user.username}!</span>
                 <button
                   onClick={handleLogout}
                   className="ml-4 px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition duration-200"

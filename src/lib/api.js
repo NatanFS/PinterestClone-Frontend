@@ -1,12 +1,33 @@
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
-export async function fetchPins() {
-  const response = await fetch(`${API_BASE_URL}/pins/`);
+export async function fetchPins(searchQuery, filterType, orderCriteria, url = null) {
+  const params = new URLSearchParams();
+
+  if (!url) {
+    if (searchQuery) {
+      params.append(filterType, searchQuery);
+    }
+    if (orderCriteria) {
+      params.append('ordering', orderCriteria);
+    }
+    params.append('page', 1); 
+    url = `http://127.0.0.1:8000/api/pins/?${params.toString()}`;
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    },
+  });
+
   if (!response.ok) {
     throw new Error('Failed to fetch pins');
   }
-  return await response.json();
+
+  return response.json();
 }
+
+
 
 export async function fetchPin(pinId) {
   const response = await fetch(`${API_BASE_URL}/pins/${pinId}/`);
@@ -39,16 +60,18 @@ export async function uploadPin(data) {
 }
 
 
-export async function likePin(pinId) {
-  const response = await fetch(`${API_BASE_URL}/pins/${pinId}/like/`, {
+export async function toggleLike(pinId) {
+  const response = await fetch(`http://127.0.0.1:8000/api/pins/${pinId}/like/`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+      'Content-Type': 'application/json',
     },
   });
 
   if (!response.ok) {
-    throw new Error('Failed to like pin');
+    throw new Error('Failed to toggle like');
   }
-  return await response.json();
+
+  return response.json();
 }
