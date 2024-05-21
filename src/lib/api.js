@@ -14,10 +14,15 @@ export async function fetchPins(searchQuery, filterType, orderCriteria, url = nu
     url = `http://127.0.0.1:8000/api/pins/?${params.toString()}`;
   }
 
+  const headers = {};
+
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const response = await fetch(url, {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-    },
+    headers: headers,
   });
 
   if (!response.ok) {
@@ -44,11 +49,16 @@ export async function uploadPin(data) {
   formData.append('tags', JSON.stringify(data.tags));
   formData.append('description', data.description);
 
+  const headers = {};
+
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const response = await fetch('http://127.0.0.1:8000/api/pins/', {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-    },
+    headers: headers,
     body: formData,
   });
 
@@ -61,6 +71,7 @@ export async function uploadPin(data) {
 
 
 export async function toggleLike(pinId) {
+  
   const response = await fetch(`http://127.0.0.1:8000/api/pins/${pinId}/like/`, {
     method: 'POST',
     headers: {
